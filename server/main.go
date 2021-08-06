@@ -8,7 +8,7 @@ import (
 func main() {
 
 	router := gin.Default()
-	router.Use(static.Serve("/", static.LocalFile("../client", true)))
+	router.Use(static.Serve("/", static.LocalFile("./web", true)))
 	api := router.Group("/api")
 	api.GET("/")
 	api.GET("/test", func(context *gin.Context) {
