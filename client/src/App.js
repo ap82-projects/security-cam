@@ -14,6 +14,9 @@ function App() {
       console.log(response);
       setTestResult(response.data.message);
     })
+    console.log("before process.env")
+    console.log(process.env)
+    console.log("after process.env")
   }, [])
 
   return (
@@ -23,7 +26,7 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        <p>Your current test is {testResult}</p>
+        <p>{process.env.REACT_APP_MESSAGE} {testResult}</p>
       </header>
     </div>
   );
