@@ -1,35 +1,44 @@
-import logo from './logo.svg';
 import './App.css';
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from 'react';
+import MainPage from './components/MainPage';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
+import { useAuthState } from 'react-firebase-hooks/auth';
+
+firebase.initializeApp({
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID
+});
+
+const auth = firebase.auth();
 
 function App() {
-  const [ testResult, setTestResult ] = useState("pending");
-
-  useEffect(() => {
-    console.log("before axios call")
-    axios.get("api/test")
-    .then((response) => {
-      console.log("response");
-      console.log(response);
-      setTestResult(response.data.message);
-    })
-    console.log("before process.env")
-    console.log(process.env)
-    console.log("after process.env")
-  }, [])
-
+  const [userAuth] = useAuthState(auth);
+  console.log("in app.js")
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>{process.env.REACT_APP_MESSAGE} {testResult}</p>
-      </header>
+      <h1>Security Cam</h1>
+      {userAuth ? <MainPage userAuth={userAuth} auth={auth} /> : <SignIn />}
     </div>
   );
+}
+
+function SignIn() {
+  const signInWithGoogle = () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider);
+  }
+
+  
+
+  return (
+    <button onClick={signInWithGoogle}>Sign in with Google</button>
+  )
 }
 
 export default App;

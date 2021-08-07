@@ -7,7 +7,6 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-w" -a -o /main .
 
 # Build the Security Cam app
 FROM node:alpine AS node_builder
-ENV REACT_APP_MESSAGE=$REACT_APP_MESSAGE
 COPY --from=builder /app/client ./
 RUN npm install
 RUN npm run build

@@ -12,6 +12,7 @@ import (
 
 	"cloud.google.com/go/firestore"
 	firebase "firebase.google.com/go"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -179,7 +180,10 @@ func main() {
 			log.Println("User found. Sending response.")
 			log.Println("Document id", docId)
 			// fmt.Fprintln(w, "{ \"id\":", docId, "}")
-			c.String(http.StatusOK, "{ \"id\":", docId, "}")
+			// c.String(http.StatusOK, "{ \"id\":", docId, "}")
+			c.JSON(http.StatusOK, gin.H{
+				"id": doc.Ref.ID,
+			})
 		}
 	})
 
@@ -389,6 +393,6 @@ func main() {
 		c.String(http.StatusOK, "{ \"token\":", token, "}")
 
 	})
-
+	router.Use(cors.Default())
 	router.Run()
 }
