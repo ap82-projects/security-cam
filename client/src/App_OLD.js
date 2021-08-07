@@ -26,7 +26,7 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        <p>{process.env.REACT_APP_MESSAGE} {testResult}</p>
+        <p>{process.env.REACT_APP_MESSAGE} {testResult} process</p>
       </header>
     </div>
   );

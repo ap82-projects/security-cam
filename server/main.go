@@ -27,7 +27,7 @@ import (
 )
 
 func main() {
-	if os.Getenv("ENV") != "deployment" {
+	if os.Getenv("NODE_ENV") != "production" {
 		err := godotenv.Load()
 		if err != nil {
 			log.Println("Error loading .env file: ", err.Error())
@@ -328,7 +328,9 @@ func main() {
 		// 	log.Println(identity, room)
 		// 	log.Println("token")
 		// 	log.Println(token)
-		// 	c.String(http.StatusOK, "{ \"token\":", jwt, "}")
+		//  c.JSON(http.StatusOK, gin.H{
+		//   "token": token,
+		//  })
 		// }
 
 		accountSid := os.Getenv("TWILIO_ACCOUNT_SID")
@@ -390,7 +392,10 @@ func main() {
 		}
 
 		fmt.Println(token)
-		c.String(http.StatusOK, "{ \"token\":", token, "}")
+		// c.String(http.StatusOK, "{ \"token\":", token, "}")
+		c.JSON(http.StatusOK, gin.H{
+			"token": token,
+		})
 
 	})
 	router.Use(cors.Default())
