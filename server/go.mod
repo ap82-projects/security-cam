@@ -9,5 +9,7 @@ require (
 	github.com/gin-gonic/gin v1.7.3 // indirect
 	github.com/joho/godotenv v1.3.0 // indirect
 	github.com/mitchellh/mapstructure v1.4.1 // indirect
+	github.com/sendgrid/rest v2.6.4+incompatible // indirect
+	github.com/sendgrid/sendgrid-go v3.10.0+incompatible // indirect
 	google.golang.org/api v0.40.0 // indirect
 )
