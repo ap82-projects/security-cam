@@ -3,3 +3,6 @@ build:
     web: Dockerfile
     worker:
        dockerfile: Dockerfile
+  config:
+    REACT_APP_MESSAGE: $REACT_APP_MESSAGE
+  
