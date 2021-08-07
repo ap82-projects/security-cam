@@ -10,7 +10,7 @@ FROM node:alpine AS node_builder
 COPY --from=builder /app/client ./
 RUN npm install
 ARG REACT_APP_MESSAGE
-ENV REACT_APP_MESSAGE $REACT_APP_MESSAGE
+ENV REACT_APP_MESSAGE=$REACT_APP_MESSAGE
 RUN npm run build
 
 # Build production container
