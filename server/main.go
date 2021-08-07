@@ -276,5 +276,29 @@ func main() {
 		}
 	})
 
+	api.PUT("/user/watching", func(c *gin.Context) {
+		log.Println("Request on /api/user/watching type: PUT")
+
+		userId := c.Query("id")
+		var currently WatchingUpdate
+		err := json.NewDecoder(c.Request.Body).Decode(&currently)
+		if err != nil {
+			// http.Error(w, err.Error(), http.StatusBadRequest)
+			c.String(http.StatusBadRequest, err.Error())
+			return
+		}
+		log.Println("User", userId, "current watching status:", currently.Watching)
+		log.Println("Updating user data")
+		_, err = client.Collection("users").Doc(userId).Update(ctx, []firestore.Update{
+			{
+				Path:  "watching",
+				Value: currently.Watching,
+			},
+		})
+		if err != nil {
+			log.Println("An error has occurred:", err.Error())
+		}
+	})
+
 	router.Run()
 }
