@@ -14,6 +14,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/mitchellh/mapstructure"
+	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 )
 
@@ -149,6 +150,29 @@ func main() {
 		} else {
 			log.Println("User", userId, "deleted at", fsDeleteTime)
 			c.String(http.StatusOK, "User", userId, "deleted at", fsDeleteTime)
+		}
+	})
+
+	api.GET("/user/google/:id", func(c *gin.Context) {
+		log.Println("Request type: GET")
+		userGoogleId := c.Param("id")
+		log.Println("Retrieving user with Google ID", userGoogleId)
+		query := client.Collection("users").Where("googleid", "==", userGoogleId).Documents(ctx)
+		for {
+			doc, err := query.Next()
+			if err == iterator.Done {
+				break
+			}
+
+			id, err := json.Marshal(doc.Ref.ID)
+			if err != nil {
+				log.Println("Error:", err)
+			}
+			docId := string(id)
+			log.Println("User found. Sending response.")
+			log.Println("Document id", docId)
+			// fmt.Fprintln(w, "{ \"id\":", docId, "}")
+			c.String(http.StatusOK, "{ \"id\":", docId, "}")
 		}
 	})
 
