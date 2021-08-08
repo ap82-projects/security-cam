@@ -9,8 +9,6 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-w" -a -o /main .
 FROM node:alpine AS node_builder
 COPY --from=builder /app/client ./
 RUN npm install
-ARG REACT_APP_MESSAGE
-ENV REACT_APP_MESSAGE=$REACT_APP_MESSAGE
 RUN npm run build
 
 # Build production container

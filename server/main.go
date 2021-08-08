@@ -92,9 +92,9 @@ func main() {
 	api := router.Group("/api")
 	api.GET("/")
 	api.GET("/test", func(context *gin.Context) {
-		message := os.Getenv("TEST")
+		// message := os.Getenv("TEST")
 		context.JSON(200, gin.H{
-			"message": message,
+			"message": "passed",
 		})
 	})
 
@@ -397,6 +397,17 @@ func main() {
 			"token": token,
 		})
 
+	})
+
+	api.GET("firebase", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"apiKey":            os.Getenv("REACT_APP_API_KEY"),
+			"authDomain":        os.Getenv("REACT_APP_AUTH_DOMAIN"),
+			"projectId":         os.Getenv("REACT_APP_PROJECT_ID"),
+			"storageBucket":     os.Getenv("REACT_APP_STORAGE_BUCKET"),
+			"messagingSenderId": os.Getenv("REACT_APP_MESSAGING_SENDER_ID"),
+			"appId":             os.Getenv("REACT_APP_APP_ID"),
+		})
 	})
 	router.Use(cors.Default())
 	router.Run()
