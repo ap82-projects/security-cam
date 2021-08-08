@@ -1,5 +1,4 @@
 import React from 'react';
-// import { React } from '../react';
 import MainPage from './MainPage';
 import firebase from 'firebase/app';
 import 'firebase/firestore';

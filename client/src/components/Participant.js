@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-// import { React } from "react";
 
 const Participant = ({ participant }) => {
   const [videoTracks, setVideoTracks] = useState([]);
@@ -20,10 +19,8 @@ const Participant = ({ participant }) => {
     const trackSubscribed = (track) => {
       if (track.kind === "video") {
         setVideoTracks((videoTracks) => [...videoTracks, track]);
-        // videoTracks.push(track);
       } else if (track.kind === "audio") {
         setAudioTracks((audioTracks) => [...audioTracks, track]);
-        // audioTracks.push(track);
       }
     };
 

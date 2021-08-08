@@ -1,7 +1,5 @@
 import './Incidents.css';
 import React from 'react';
-// import { React } from '../react';
-// import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
@@ -15,8 +13,6 @@ function Incidents(props) {
     userDocumentId,
     getUserData,
     axios
-    // serverURL,
-    // socket
   } = props;
 
   return (
@@ -41,7 +37,6 @@ function Incidents(props) {
               <Button variant='danger' id={incident.Time} onClick={deleteIncident}>Delete Incident</Button>
             </Col>
           </Row>
-          {/* <p>{incident.Image}</p> */}
         </Card>
       ));
     } else {
@@ -50,8 +45,6 @@ function Incidents(props) {
   }
 
   async function deleteIncident(e) {
-    // console.log("in delete")
-    // console.log(e.target.id)
     const response = await axios.delete(`/api/user/incident?id=${userDocumentId}&time=${e.target.id}`);
     const updatedUserData = await getUserData(userDocumentId);
     setUser(updatedUserData)

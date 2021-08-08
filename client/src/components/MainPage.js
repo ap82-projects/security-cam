@@ -1,19 +1,11 @@
 import './MainPage.css'
 import React, { useState, useEffect } from 'react';
-// import { React } from '../react'
-// import io from 'socket.io-client';
-// import axios from 'axios';
 import Incidents from './Incidents';
 import SecurityCam from './SecurityCam';
 import VideoChat from './VideoChat';
-// import { jsonEval } from '@firebase/util';
-// const serverURL = process.env.SERVER_URL || 'localhost:8080';
-// const serverURL = '192.168.10.64:8080';
 
 function MainPage(props) {
   const { userAuth, auth, axios } = props;
-  // const [socket, setSocket] = useState(io(`ws://${serverURL}/socket.io/`, { transports: ['websocket'] }));
-  // const [socket, setSocket] = useState();
   const [userGoogleId, setUserGoogleId] = useState(userAuth.providerData[0].uid);
   const [userGoogleName, setUserGoogleName] = useState(userAuth.displayName);
   const [userGoogleEmail, setUserGoogleEmail] = useState(userAuth.email);
@@ -24,17 +16,7 @@ function MainPage(props) {
   const [watchSecurityCam, setWatchSecurityCam] = useState(false);
 
   useEffect(async () => {
-    // const socket = io(`ws://${serverURL}/socket.io/`, { transports: ['websocket'] });
-    // console.log("SOCKET!!!!")
-    // console.log(socket);
-
-    // socket.emit('watch', {name: "name", message: "hi"}, )
-    // setSocket(socket);
-    // setSocket(io(`ws://${serverURL}/socket.io/`, { transports: ['websocket'] }));
-    console.log("userGoogleId", userGoogleId)
     const existingUserDoc = await getUserDocId(userGoogleId);
-    console.log("existingUserDoc")
-    console.log(existingUserDoc)
     if (existingUserDoc && existingUserDoc.id) {
       setUserDocumentId(existingUserDoc.id)
       const userData = await getUserData(existingUserDoc.id);
@@ -65,10 +47,6 @@ function MainPage(props) {
       // }
       /////////////////////////////////////////
     }
-    // console.log('userDocumentId')
-    // console.log(userDocumentId)
-    // console.log('user.email')
-    // console.log(user.email)
   }, []);
 
   useEffect(async () => {
@@ -79,16 +57,6 @@ function MainPage(props) {
   return (
     <div className="MainPage">
       <div>
-        {/* HEADER DIV */}
-        {/* INCLUDE OPTION TO CHANGE TO CAMERA MODE */}
-        {/* <p>User document ID {userDocumentId}</p> */}
-        {/* <p>UserData {JSON.stringify(user)}</p> */}
-        {/* <p>{JSON.stringify(socket)}</p> */}
-        {/* <p>acc sid = {process.env.REACT_APP_TWILIO_ACCOUNT_SID}</p>
-        <p>api key = {process.env.REACT_APP_TWILIO_API_KEY_SID}</p>
-        <p>key sec ={process.env.REACT_APP_TWILIO_API_KEY_SECRET}</p>
-        <p>aut tok = {process.env.REACT_APP_TWILIO_AUTH_TOKEN}</p>
-        <p>ser sid = {process.env.REACT_APP_TWILIO_CONVERSATIONS_SERVICE_SID}</p> */}
         <button variant="danger" onClick={() => auth.signOut()}>Sign Out</button>
         <button onClick={watchSecurityCam ? cutSecurityFeed : viewSecurityFeed}>
           {watchSecurityCam ? 'Cut Security Feed' : 'View Security Feed'}
@@ -98,11 +66,9 @@ function MainPage(props) {
         </button>
       </div>
       <div>
-        {/* INCIDENTS DIV */}
         {asSecurityCam
           ? <SecurityCam addIncident={addIncident} />
           : watchSecurityCam
-            // ? <VideoChat guestName={user.Name} guestRoom={userDocumentId} serverUrl={serverURL} />
             ? <VideoChat guestName={user.Name} guestRoom={userDocumentId} />
             : <Incidents
           user={user}
@@ -110,7 +76,6 @@ function MainPage(props) {
           userDocumentId={userDocumentId}
           getUserData={getUserData}
           axios={axios}
-          // serverURL={serverURL}
           />
         }
       </div>
@@ -123,9 +88,6 @@ function MainPage(props) {
   }
 
   async function getUserData(docID) {
-    // console.log('userDocumentId in getUserData')
-    // console.log(userDocumentId)
-    // const response = await axios.get(`http://${serverURL}/api/user?id=${userDocumentId}`);
     const response = await axios.get(`/api/user?id=${docID}`);
     return response.data;
   }
@@ -144,9 +106,6 @@ function MainPage(props) {
 
   async function viewSecurityFeed() {
     setWatchSecurityCam(true);
-    // console.log(socket)
-    // socket.emit('/watch', {'Text': 'hi'})
-    // socket.emit('watch', {'Text': 'hi'})
     const response = await axios.put(`/api/user/watching?id=${userDocumentId}`, {
       'watching': true
     });
@@ -166,7 +125,6 @@ function MainPage(props) {
     });
   }
 
-  // async function testDeleteIncident(time) {
   async function testDeleteIncident() {
     const time = 'this time';
     const response = await axios.delete(`/api/user/incident?id=${userDocumentId}&time=${encodeURIComponent(time)}`);

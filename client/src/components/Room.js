@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
-// import { React } from "../react";
 import Participant from "./Participant";
 
 const Room = ({ roomName, room, handleLogout, guestRoom }) => {
   const [participants, setParticipants] = useState([]);
-  // const guestURL = window.location.protocol 
-  //                  + "//" + window.location.host
-  //                  + "/?guestRoom=" + guestRoom;
 
   useEffect(() => {
     const participantConnected = (participant) => {
@@ -34,9 +30,6 @@ const Room = ({ roomName, room, handleLogout, guestRoom }) => {
 
   return (
     <div className="room">
-      {/* <h4>Room: {roomName}</h4> */}
-      
-      {/* <h5>Remote Participants</h5> */}
       <div className="remote-participants">{remoteParticipants}</div>
       <div className="local-participant">
         {room ? (
