@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import env from "@beam-australia/react-env";
 
 function App() {
   const [ testResult, setTestResult ] = useState("pending");
@@ -17,6 +18,9 @@ function App() {
     console.log("before process.env")
     console.log(process.env)
     console.log("after process.env")
+    console.log("before env")
+    console.log(env("REACT_APP_MESSAGE"));
+    console.log("after env")
   }, [])
 
   return (
