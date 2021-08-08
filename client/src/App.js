@@ -1,18 +1,27 @@
 import './App.css';
-// import React, { useState, useEffect } from 'react';
-import { React } from './react';
+import React, { useState, useEffect } from 'react';
+// import { React } from './react';
 // import { useState, useEffect } from React;
 import LoginPage from './components/LoginPage';
 import axios from 'axios';
 
 function App() {
-  const [testResult, setTestResult] = React.useState();
+  const [testResult, setTestResult] = useState();
 
-  React.useEffect(() => {
+  useEffect(() => {
+    console.log("in App")
     axios.get("/api/test")
       .then((response) => {
+        console.log("response.data.message")
+        console.log(response.data.message)
         setTestResult(response.data.message)
       })
+    // axios.get("/api/privatetest")
+    //   .then((response) => {
+    //     console.log("private response.data.messge")
+    //     console.log(response.data.message)
+    //   })
+    console.log("afterAxios")
   }, [])
 
   return (

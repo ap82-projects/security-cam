@@ -1,6 +1,6 @@
 import './MainPage.css'
-// import React, { useState, useEffect } from 'react';
-import { React } from '../react'
+import React, { useState, useEffect } from 'react';
+// import { React } from '../react'
 // import io from 'socket.io-client';
 // import axios from 'axios';
 import Incidents from './Incidents';
@@ -14,16 +14,16 @@ function MainPage(props) {
   const { userAuth, auth, axios } = props;
   // const [socket, setSocket] = useState(io(`ws://${serverURL}/socket.io/`, { transports: ['websocket'] }));
   // const [socket, setSocket] = useState();
-  const [userGoogleId, setUserGoogleId] = React.useState(userAuth.providerData[0].uid);
-  const [userGoogleName, setUserGoogleName] = React.useState(userAuth.displayName);
-  const [userGoogleEmail, setUserGoogleEmail] = React.useState(userAuth.email);
-  const [userGooglePhone, setUserGooglePhone] = React.useState(userAuth.phoneNumber);
-  const [userDocumentId, setUserDocumentId] = React.useState("")
-  const [user, setUser] = React.useState({});
-  const [asSecurityCam, setAsSecurityCam] = React.useState(false);
-  const [watchSecurityCam, setWatchSecurityCam] = React.useState(false);
+  const [userGoogleId, setUserGoogleId] = useState(userAuth.providerData[0].uid);
+  const [userGoogleName, setUserGoogleName] = useState(userAuth.displayName);
+  const [userGoogleEmail, setUserGoogleEmail] = useState(userAuth.email);
+  const [userGooglePhone, setUserGooglePhone] = useState(userAuth.phoneNumber);
+  const [userDocumentId, setUserDocumentId] = useState("")
+  const [user, setUser] = useState({});
+  const [asSecurityCam, setAsSecurityCam] = useState(false);
+  const [watchSecurityCam, setWatchSecurityCam] = useState(false);
 
-  React.useEffect(async () => {
+  useEffect(async () => {
     // const socket = io(`ws://${serverURL}/socket.io/`, { transports: ['websocket'] });
     // console.log("SOCKET!!!!")
     // console.log(socket);
@@ -71,7 +71,7 @@ function MainPage(props) {
     // console.log(user.email)
   }, []);
 
-  React.useEffect(async () => {
+  useEffect(async () => {
     const updatedUserData = await getUserData(userDocumentId);
     setUser(updatedUserData);
   }, [asSecurityCam])

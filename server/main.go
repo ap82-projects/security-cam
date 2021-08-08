@@ -95,9 +95,8 @@ func main() {
 	api := router.Group("/api")
 	api.GET("/")
 
-	api.GET("/test", func(context *gin.Context) {
-		// message := os.Getenv("TEST")
-		context.JSON(200, gin.H{
+	api.GET("/test", func(c *gin.Context) {
+		c.JSON(200, gin.H{
 			"message": "passed",
 		})
 	})
@@ -415,4 +414,14 @@ func main() {
 	})
 	router.Use(cors.Default())
 	router.Run()
+
+	// routerPrivate := gin.Default()
+	// apiPrivate := routerPrivate.Group("/api")
+	// apiPrivate.GET("/privatetest", func(c *gin.Context) {
+	// 	c.JSON(200, gin.H{
+	// 		"message": "private",
+	// 	})
+	// })
+	// routerPrivate.Use(cors.Default())
+	// routerPrivate.Run(":8088")
 }

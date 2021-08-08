@@ -1,14 +1,14 @@
-// import React, { useEffect, useState } from "react";
-import { React } from "../react";
+import React, { useEffect, useState } from "react";
+// import { React } from "../react";
 import Participant from "./Participant";
 
 const Room = ({ roomName, room, handleLogout, guestRoom }) => {
-  const [participants, setParticipants] = React.useState([]);
+  const [participants, setParticipants] = useState([]);
   // const guestURL = window.location.protocol 
   //                  + "//" + window.location.host
   //                  + "/?guestRoom=" + guestRoom;
 
-  React.useEffect(() => {
+  useEffect(() => {
     const participantConnected = (participant) => {
       setParticipants((prevParticipants) => [...prevParticipants, participant]);
     };
