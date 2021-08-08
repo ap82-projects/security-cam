@@ -58,9 +58,10 @@ function MainPage(props) {
     <div className="MainPage">
       <div>
         <button variant="danger" onClick={() => auth.signOut()}>Sign Out</button>
+        {/* DISABLED UNTIL IMPLEMENTATION CLEANED UP
         <button onClick={watchSecurityCam ? cutSecurityFeed : viewSecurityFeed}>
           {watchSecurityCam ? 'Cut Security Feed' : 'View Security Feed'}
-        </button>
+        </button> */}
         <button onClick={() => setAsSecurityCam(!asSecurityCam)}>
           {asSecurityCam ? 'Stop Monitoring' : 'Security Cam'}
         </button>
