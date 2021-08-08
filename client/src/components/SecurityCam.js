@@ -1,17 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
+// import React, { useState, useEffect, useRef } from 'react';
+import { React } from '../react';
 import Webcam from 'react-webcam';
 
 function SecurityCam(props) {
 
-  const { user, addIncident } = props;
-  const [movement, setMovement] = useState('OK')
-  const [videoConstraints, setVideoConstraints] = useState('user') // user-facing/selfie
+  const { addIncident } = props;
+  const [movement, setMovement] = React.useState('OK')
+  const [videoConstraints, setVideoConstraints] = React.useState('user') // user-facing/selfie
   let pre, post;
   const threshold = 15;
   const interval = 500;
   let diffImg = '';
 
-  const webcamRef = useRef(null);
+  const webcamRef = React.useRef(null);
   const capture = async () => {
     if (webcamRef.current) {
       const pic = await webcamRef.current.getScreenshot();
@@ -30,7 +31,7 @@ function SecurityCam(props) {
     }
   }
 
-  useEffect(() => {
+  React.useEffect(() => {
     const captureInterval = setInterval(capture, interval)
     return () => clearInterval(captureInterval)
   }, [])

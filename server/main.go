@@ -4,11 +4,13 @@ import (
 	// "encoding/json"
 	"context"
 	"encoding/json"
-	"fmt"
+
+	// "fmt"
 	"log"
 	"net/http"
 	"os"
-	"time"
+
+	// "time"
 
 	"cloud.google.com/go/firestore"
 	firebase "firebase.google.com/go"
@@ -21,7 +23,7 @@ import (
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
 
 	// twilio "github.com/xaviiic/twilioGo"
-	jose "github.com/dvsekhvalnov/jose2go"
+	// jose "github.com/dvsekhvalnov/jose2go"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 )
@@ -58,9 +60,9 @@ func main() {
 	//*************************************************************************//
 	/////////////////////////////////////////////////////////////////////////////
 
-	type UserId struct {
-		Id string
-	}
+	// type UserId struct {
+	// 	Id string
+	// }
 	type Incident struct {
 		Time  string
 		Image string
@@ -68,10 +70,10 @@ func main() {
 	type WatchingUpdate struct {
 		Watching bool
 	}
-	type WatchingMessageToCamera struct {
-		Id       string
-		Watching bool
-	}
+	// type WatchingMessageToCamera struct {
+	// 	Id       string
+	// 	Watching bool
+	// }
 	type User struct {
 		Name      string
 		GoogleId  string
@@ -88,9 +90,11 @@ func main() {
 	/////////////////////////////////////////////////////////////////////////////
 
 	router := gin.Default()
+
 	router.Use(static.Serve("/", static.LocalFile("./web", true)))
 	api := router.Group("/api")
 	api.GET("/")
+
 	api.GET("/test", func(context *gin.Context) {
 		// message := os.Getenv("TEST")
 		context.JSON(200, gin.H{
@@ -308,96 +312,96 @@ func main() {
 		}
 	})
 
-	api.GET("/videotoken", func(c *gin.Context) {
-		// log.Println("Request Type GET")
-		// identity := c.Query("identity")
-		// room := c.Query("room")
-		// // var client http.Client
-		// // token := twilio.AccessToken(os.Getenv("TWILIO_ACCOUNT_SID"), os.Getenv("TWILIO_AUTH_TOKEN"), &client)
-		// accountID := os.Getenv("TWILIO_ACCOUNT_SID")
-		// keyID := os.Getenv("TWILIO_API_KEY_SID")
-		// secret := os.Getenv("TWILIO_API_KEY_SECRET")
-		// token := twilio.NewAccessToken(accountID, keyID, secret)
-		// token.SetIdentity(identity)
-		// grant := twilio.NewVideoGrant(room)
-		// token.AddGrant(grant)
-		// jwt, err := token.ToJWT()
-		// if err != nil {
-		// 	log.Println("Error Creating JWT token: ", err.Error())
-		// } else {
-		// 	log.Println(identity, room)
-		// 	log.Println("token")
-		// 	log.Println(token)
-		//  c.JSON(http.StatusOK, gin.H{
-		//   "token": token,
-		//  })
-		// }
+	// api.GET("/videotoken", func(c *gin.Context) {
+	// 	// log.Println("Request Type GET")
+	// 	// identity := c.Query("identity")
+	// 	// room := c.Query("room")
+	// 	// // var client http.Client
+	// 	// // token := twilio.AccessToken(os.Getenv("TWILIO_ACCOUNT_SID"), os.Getenv("TWILIO_AUTH_TOKEN"), &client)
+	// 	// accountID := os.Getenv("TWILIO_ACCOUNT_SID")
+	// 	// keyID := os.Getenv("TWILIO_API_KEY_SID")
+	// 	// secret := os.Getenv("TWILIO_API_KEY_SECRET")
+	// 	// token := twilio.NewAccessToken(accountID, keyID, secret)
+	// 	// token.SetIdentity(identity)
+	// 	// grant := twilio.NewVideoGrant(room)
+	// 	// token.AddGrant(grant)
+	// 	// jwt, err := token.ToJWT()
+	// 	// if err != nil {
+	// 	// 	log.Println("Error Creating JWT token: ", err.Error())
+	// 	// } else {
+	// 	// 	log.Println(identity, room)
+	// 	// 	log.Println("token")
+	// 	// 	log.Println(token)
+	// 	//  c.JSON(http.StatusOK, gin.H{
+	// 	//   "token": token,
+	// 	//  })
+	// 	// }
 
-		accountSid := os.Getenv("TWILIO_ACCOUNT_SID")
-		keySid := os.Getenv("TWILIO_API_KEY_SID")
-		keySecret := os.Getenv("TWILIO_API_KEY_SECRET")
-		username := c.Query("identity")
-		roomName := c.Query("room")
+	// 	accountSid := os.Getenv("TWILIO_ACCOUNT_SID")
+	// 	keySid := os.Getenv("TWILIO_API_KEY_SID")
+	// 	keySecret := os.Getenv("TWILIO_API_KEY_SECRET")
+	// 	username := c.Query("identity")
+	// 	roomName := c.Query("room")
 
-		now := time.Now()
+	// 	now := time.Now()
 
-		type JWTPayload struct {
-			Jti                    string `json:"jti"`
-			Issuer                 string `json:"iss"`
-			Subject                string `json:"sub"`
-			CreationUnixTimestamp  int64  `json:"iat"`
-			NotBeforeUnixTimestamp int64  `json:"nbf"`
-			ExpiresUnixTimestamp   int64  `json:"exp"`
-			Grants                 struct {
-				Identity string `json:"identity"`
-				Video    struct {
-					Room string `json:"room"`
-				} `json:"video"`
-			} `json:"grants"`
-		}
+	// 	type JWTPayload struct {
+	// 		Jti                    string `json:"jti"`
+	// 		Issuer                 string `json:"iss"`
+	// 		Subject                string `json:"sub"`
+	// 		CreationUnixTimestamp  int64  `json:"iat"`
+	// 		NotBeforeUnixTimestamp int64  `json:"nbf"`
+	// 		ExpiresUnixTimestamp   int64  `json:"exp"`
+	// 		Grants                 struct {
+	// 			Identity string `json:"identity"`
+	// 			Video    struct {
+	// 				Room string `json:"room"`
+	// 			} `json:"video"`
+	// 		} `json:"grants"`
+	// 	}
 
-		payload := JWTPayload{
-			Jti:                    fmt.Sprintf("%s-%d", keySid, now.UnixNano()),
-			Issuer:                 keySid,
-			Subject:                accountSid,
-			CreationUnixTimestamp:  now.Unix(),
-			NotBeforeUnixTimestamp: now.Unix(),
-			ExpiresUnixTimestamp:   now.Add(23 * time.Hour).Unix(),
-			Grants: struct {
-				Identity string `json:"identity"`
-				Video    struct {
-					Room string `json:"room"`
-				} `json:"video"`
-			}{
-				Identity: username,
-				Video: struct {
-					Room string `json:"room"`
-				}{
-					Room: roomName,
-				},
-			},
-		}
+	// 	payload := JWTPayload{
+	// 		Jti:                    fmt.Sprintf("%s-%d", keySid, now.UnixNano()),
+	// 		Issuer:                 keySid,
+	// 		Subject:                accountSid,
+	// 		CreationUnixTimestamp:  now.Unix(),
+	// 		NotBeforeUnixTimestamp: now.Unix(),
+	// 		ExpiresUnixTimestamp:   now.Add(23 * time.Hour).Unix(),
+	// 		Grants: struct {
+	// 			Identity string `json:"identity"`
+	// 			Video    struct {
+	// 				Room string `json:"room"`
+	// 			} `json:"video"`
+	// 		}{
+	// 			Identity: username,
+	// 			Video: struct {
+	// 				Room string `json:"room"`
+	// 			}{
+	// 				Room: roomName,
+	// 			},
+	// 		},
+	// 	}
 
-		payloadByte, err := json.Marshal(payload)
-		if err != nil {
-			log.Fatal(err)
-		}
-		token, err := jose.SignBytes(payloadByte, jose.HS256, []byte(keySecret),
-			jose.Header("cty", "twilio-fpa;v=1"),
-			jose.Header("typ", "JWT"),
-			jose.Header("alg", "HS256"),
-		)
-		if err != nil {
-			log.Fatal(err)
-		}
+	// 	payloadByte, err := json.Marshal(payload)
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
+	// 	token, err := jose.SignBytes(payloadByte, jose.HS256, []byte(keySecret),
+	// 		jose.Header("cty", "twilio-fpa;v=1"),
+	// 		jose.Header("typ", "JWT"),
+	// 		jose.Header("alg", "HS256"),
+	// 	)
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
 
-		fmt.Println(token)
-		// c.String(http.StatusOK, "{ \"token\":", token, "}")
-		c.JSON(http.StatusOK, gin.H{
-			"token": token,
-		})
+	// 	fmt.Println(token)
+	// 	// c.String(http.StatusOK, "{ \"token\":", token, "}")
+	// 	c.JSON(http.StatusOK, gin.H{
+	// 		"token": token,
+	// 	})
 
-	})
+	// })
 
 	api.GET("firebase", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{

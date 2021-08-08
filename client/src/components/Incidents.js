@@ -1,6 +1,7 @@
 import './Incidents.css';
-import React from 'react';
-import axios from 'axios';
+// import React from 'react';
+import { React } from '../react';
+// import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
@@ -13,6 +14,7 @@ function Incidents(props) {
     setUser,
     userDocumentId,
     getUserData,
+    axios
     // serverURL,
     // socket
   } = props;

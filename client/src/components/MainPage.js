@@ -1,7 +1,8 @@
 import './MainPage.css'
-import React, { useState, useEffect } from 'react';
+// import React, { useState, useEffect } from 'react';
+import { React } from '../react'
 // import io from 'socket.io-client';
-import axios from 'axios';
+// import axios from 'axios';
 import Incidents from './Incidents';
 import SecurityCam from './SecurityCam';
 import VideoChat from './VideoChat';
@@ -10,19 +11,19 @@ import VideoChat from './VideoChat';
 // const serverURL = '192.168.10.64:8080';
 
 function MainPage(props) {
-  const { userAuth, auth } = props;
+  const { userAuth, auth, axios } = props;
   // const [socket, setSocket] = useState(io(`ws://${serverURL}/socket.io/`, { transports: ['websocket'] }));
-  const [socket, setSocket] = useState();
-  const [userGoogleId, setUserGoogleId] = useState(userAuth.providerData[0].uid);
-  const [userGoogleName, setUserGoogleName] = useState(userAuth.displayName);
-  const [userGoogleEmail, setUserGoogleEmail] = useState(userAuth.email);
-  const [userGooglePhone, setUserGooglePhone] = useState(userAuth.phoneNumber);
-  const [userDocumentId, setUserDocumentId] = useState("")
-  const [user, setUser] = useState({});
-  const [asSecurityCam, setAsSecurityCam] = useState(false);
-  const [watchSecurityCam, setWatchSecurityCam] = useState(false);
+  // const [socket, setSocket] = useState();
+  const [userGoogleId, setUserGoogleId] = React.useState(userAuth.providerData[0].uid);
+  const [userGoogleName, setUserGoogleName] = React.useState(userAuth.displayName);
+  const [userGoogleEmail, setUserGoogleEmail] = React.useState(userAuth.email);
+  const [userGooglePhone, setUserGooglePhone] = React.useState(userAuth.phoneNumber);
+  const [userDocumentId, setUserDocumentId] = React.useState("")
+  const [user, setUser] = React.useState({});
+  const [asSecurityCam, setAsSecurityCam] = React.useState(false);
+  const [watchSecurityCam, setWatchSecurityCam] = React.useState(false);
 
-  useEffect(async () => {
+  React.useEffect(async () => {
     // const socket = io(`ws://${serverURL}/socket.io/`, { transports: ['websocket'] });
     // console.log("SOCKET!!!!")
     // console.log(socket);
@@ -70,7 +71,7 @@ function MainPage(props) {
     // console.log(user.email)
   }, []);
 
-  useEffect(async () => {
+  React.useEffect(async () => {
     const updatedUserData = await getUserData(userDocumentId);
     setUser(updatedUserData);
   }, [asSecurityCam])
@@ -99,7 +100,7 @@ function MainPage(props) {
       <div>
         {/* INCIDENTS DIV */}
         {asSecurityCam
-          ? <SecurityCam user={user} addIncident={addIncident} />
+          ? <SecurityCam addIncident={addIncident} />
           : watchSecurityCam
             // ? <VideoChat guestName={user.Name} guestRoom={userDocumentId} serverUrl={serverURL} />
             ? <VideoChat guestName={user.Name} guestRoom={userDocumentId} />
@@ -108,6 +109,7 @@ function MainPage(props) {
           setUser={setUser}
           userDocumentId={userDocumentId}
           getUserData={getUserData}
+          axios={axios}
           // serverURL={serverURL}
           />
         }

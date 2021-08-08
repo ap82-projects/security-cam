@@ -1,4 +1,5 @@
-import React, { useState, useCallback, useEffect } from "react";
+// import React, { useState, useCallback, useEffect } from "react";
+import { React } from "../react";
 import Video from "twilio-video";
 import Lobby from "./Lobby";
 import Room from "./Room";
@@ -7,20 +8,20 @@ import Room from "./Room";
 const VideoChat = (props) => {
   // const { guestName, guestRoom, setRoomID } = props;
   const { guestName, guestRoom } = props;
-  const [username, setUsername] = useState(guestName ? guestName : "");
-  const [roomName, setRoomName] = useState(guestRoom ? guestRoom : "");
-  const [room, setRoom] = useState(null);
-  const [connecting, setConnecting] = useState(false);
+  const [username, setUsername] = React.useState(guestName ? guestName : "");
+  const [roomName, setRoomName] = React.useState(guestRoom ? guestRoom : "");
+  const [room, setRoom] = React.useState(null);
+  const [connecting, setConnecting] = React.useState(false);
 
-  const handleUsernameChange = useCallback((event) => {
+  const handleUsernameChange = React.useCallback((event) => {
     setUsername(event.target.value);
   }, []);
 
-  const handleRoomNameChange = useCallback((event) => {
+  const handleRoomNameChange = React.useCallback((event) => {
     setRoomName(event.target.value);
   }, []);
 
-  const handleSubmit = useCallback(
+  const handleSubmit = React.useCallback(
     async (event) => {
       event.preventDefault();
       setConnecting(true);
@@ -78,7 +79,7 @@ const VideoChat = (props) => {
     [roomName, username]
   );
 
-  const handleLogout = useCallback(() => {
+  const handleLogout = React.useCallback(() => {
     setRoom((prevRoom) => {
       if (prevRoom) {
         prevRoom.localParticipant.tracks.forEach((trackPub) => {
@@ -91,7 +92,7 @@ const VideoChat = (props) => {
     });
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (room) {
       const tidyUp = (event) => {
         if (event.persisted) {

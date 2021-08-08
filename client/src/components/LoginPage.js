@@ -1,4 +1,5 @@
-import React from 'react';
+// import React from 'react';
+import { React } from '../react';
 import MainPage from './MainPage';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
@@ -19,7 +20,7 @@ function LoginPage() {
   return (
     <div className="LoginPage">
       <h1>Security Cam</h1>
-      {userAuth ? <MainPage userAuth={userAuth} auth={auth} /> : <SignIn />}
+      {userAuth ? <MainPage userAuth={userAuth} auth={auth} axios={axios} /> : <SignIn />}
     </div>
   );
 

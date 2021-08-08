@@ -1,12 +1,14 @@
 import './App.css';
-import React, { useState, useEffect } from 'react';
+// import React, { useState, useEffect } from 'react';
+import { React } from './react';
+// import { useState, useEffect } from React;
 import LoginPage from './components/LoginPage';
 import axios from 'axios';
 
 function App() {
-  const [testResult, setTestResult] = useState();
+  const [testResult, setTestResult] = React.useState();
 
-  useEffect(() => {
+  React.useEffect(() => {
     axios.get("/api/test")
       .then((response) => {
         setTestResult(response.data.message)

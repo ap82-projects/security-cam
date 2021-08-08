@@ -1,18 +1,19 @@
-import React, { useState, useEffect, useRef } from "react";
+// import React, { useState, useEffect, useRef } from "react";
+import { React } from "react";
 
 const Participant = ({ participant }) => {
-  const [videoTracks, setVideoTracks] = useState([]);
-  const [audioTracks, setAudioTracks] = useState([]);
+  const [videoTracks, setVideoTracks] = React.useState([]);
+  const [audioTracks, setAudioTracks] = React.useState([]);
 
-  const videoRef = useRef();
-  const audioRef = useRef();
+  const videoRef = React.useRef();
+  const audioRef = React.useRef();
   
   const trackpubsToTracks = (trackMap) =>
     Array.from(trackMap.values())
       .map((publication) => publication.track)
       .filter((track) => track !== null);
 
-  useEffect(() => {
+  React.useEffect(() => {
     setVideoTracks(trackpubsToTracks(participant.videoTracks));
     setAudioTracks(trackpubsToTracks(participant.audioTracks));
 
@@ -44,7 +45,7 @@ const Participant = ({ participant }) => {
     };
   }, [participant]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const videoTrack = videoTracks[0];
     if (videoTrack) {
       videoTrack.attach(videoRef.current);
@@ -54,7 +55,7 @@ const Participant = ({ participant }) => {
     }
   }, [videoTracks]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const audioTrack = audioTracks[0];
     if (audioTrack) {
       audioTrack.attach(audioRef.current);
