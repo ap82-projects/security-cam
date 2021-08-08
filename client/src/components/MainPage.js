@@ -1,13 +1,13 @@
 import './MainPage.css'
 import React, { useState, useEffect } from 'react';
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 import axios from 'axios';
 import Incidents from './Incidents';
 import SecurityCam from './SecurityCam';
 import VideoChat from './VideoChat';
-import { jsonEval } from '@firebase/util';
+// import { jsonEval } from '@firebase/util';
 // const serverURL = process.env.SERVER_URL || 'localhost:8080';
-const serverURL = '192.168.10.64:8080';
+// const serverURL = '192.168.10.64:8080';
 
 function MainPage(props) {
   const { userAuth, auth } = props;
@@ -99,12 +99,11 @@ function MainPage(props) {
       <div>
         {/* INCIDENTS DIV */}
         {asSecurityCam
-          ? <SecurityCam user={user} socket={socket} addIncident={addIncident} />
+          ? <SecurityCam user={user} addIncident={addIncident} />
           : watchSecurityCam
             ? <VideoChat guestName={user.Name} guestRoom={userDocumentId} serverUrl={serverURL} />
             : <Incidents
           user={user}
-          socket={socket}
           setUser={setUser}
           userDocumentId={userDocumentId}
           getUserData={getUserData}

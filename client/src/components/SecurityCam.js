@@ -3,7 +3,7 @@ import Webcam from 'react-webcam';
 
 function SecurityCam(props) {
 
-  const { user, socket, addIncident } = props;
+  const { user, addIncident } = props;
   const [movement, setMovement] = useState('OK')
   const [videoConstraints, setVideoConstraints] = useState('user') // user-facing/selfie
   let pre, post;
