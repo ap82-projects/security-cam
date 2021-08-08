@@ -2,11 +2,11 @@ import React, { useState, useCallback, useEffect } from "react";
 import Video from "twilio-video";
 import Lobby from "./Lobby";
 import Room from "./Room";
-import axios from "axios";
+// import axios from "axios";
 
 const VideoChat = (props) => {
   // const { guestName, guestRoom, setRoomID } = props;
-  const { guestName, guestRoom, serverURL } = props;
+  const { guestName, guestRoom } = props;
   const [username, setUsername] = useState(guestName ? guestName : "");
   const [roomName, setRoomName] = useState(guestRoom ? guestRoom : "");
   const [room, setRoom] = useState(null);

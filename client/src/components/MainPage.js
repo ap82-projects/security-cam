@@ -101,13 +101,14 @@ function MainPage(props) {
         {asSecurityCam
           ? <SecurityCam user={user} addIncident={addIncident} />
           : watchSecurityCam
-            ? <VideoChat guestName={user.Name} guestRoom={userDocumentId} serverUrl={serverURL} />
+            // ? <VideoChat guestName={user.Name} guestRoom={userDocumentId} serverUrl={serverURL} />
+            ? <VideoChat guestName={user.Name} guestRoom={userDocumentId} />
             : <Incidents
           user={user}
           setUser={setUser}
           userDocumentId={userDocumentId}
           getUserData={getUserData}
-          serverURL={serverURL}
+          // serverURL={serverURL}
           />
         }
       </div>

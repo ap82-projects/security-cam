@@ -13,8 +13,8 @@ function Incidents(props) {
     setUser,
     userDocumentId,
     getUserData,
-    serverURL,
-    socket
+    // serverURL,
+    // socket
   } = props;
 
   return (

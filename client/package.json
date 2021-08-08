@@ -10,7 +10,6 @@
     "axios": "^0.21.1",
     "bootstrap": "^5.0.2",
     "firebase": "^8.6.8",
-    "gl-react-color-blending": "^2.0.5",
     "react": "^17.0.2",
     "react-admin-firebase": "^3.2.20",
     "react-bootstrap": "^1.6.1",
