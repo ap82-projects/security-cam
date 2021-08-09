@@ -53,7 +53,7 @@ function MainPage(props) {
     const updatedUserData = await getUserData(userDocumentId);
     setUser(updatedUserData);
   }, [asSecurityCam])
-  
+
   return (
     <div className="MainPage">
       <div>
@@ -70,19 +70,19 @@ function MainPage(props) {
         {asSecurityCam
           ? <SecurityCam addIncident={addIncident} />
           : watchSecurityCam
-            ? <VideoChat guestName={user.Name} guestRoom={userDocumentId} />
+            ? <VideoChat guestName={user.Name} guestRoom={userDocumentId} axios={axios} />
             : <Incidents
-          user={user}
-          setUser={setUser}
-          userDocumentId={userDocumentId}
-          getUserData={getUserData}
-          axios={axios}
-          />
+              user={user}
+              setUser={setUser}
+              userDocumentId={userDocumentId}
+              getUserData={getUserData}
+              axios={axios}
+            />
         }
       </div>
     </div>
   )
-  
+
   async function getUserDocId(googleId) {
     const response = await axios.get(`/api/user/google?id=${googleId}`);
     return response.data;

@@ -4,7 +4,7 @@ import Lobby from "./Lobby";
 import Room from "./Room";
 
 const VideoChat = (props) => {
-  const { guestName, guestRoom } = props;
+  const { guestName, guestRoom, axios } = props;
   const [username, setUsername] = useState(guestName ? guestName : "");
   const [roomName, setRoomName] = useState(guestRoom ? guestRoom : "");
   const [room, setRoom] = useState(null);
@@ -33,10 +33,9 @@ const VideoChat = (props) => {
       const VideoGrant = AccessToken.VideoGrant;
 
       // Used when generating any kind of tokens
-      // To set up environmental variables, see http://twil.io/secure
-      const twilioAccountSid = process.env.REACT_APP_TWILIO_ACCOUNT_SID;
-      const twilioApiKey = process.env.REACT_APP_TWILIO_API_KEY_SID;
-      const twilioApiSecret = process.env.REACT_APP_TWILIO_API_KEY_SECRET;
+      // const twilioAccountSid = process.env.REACT_APP_TWILIO_ACCOUNT_SID;
+      // const twilioApiKey = process.env.REACT_APP_TWILIO_API_KEY_SID;
+      // const twilioApiSecret = process.env.REACT_APP_TWILIO_API_KEY_SECRET;
 
       const identity = username;
 
@@ -47,10 +46,17 @@ const VideoChat = (props) => {
 
       // Create an access token which we will sign and return to the client,
       // containing the grant we just created
+      const twilioData = (await axios.get("/api/twiliodata")).data
+      // const token = new AccessToken(
+      //   twilioAccountSid,
+      //   twilioApiKey,
+      //   twilioApiSecret,
+      //   { identity: identity }
+      // );
       const token = new AccessToken(
-        twilioAccountSid,
-        twilioApiKey,
-        twilioApiSecret,
+        twilioData.accountSid,
+        twilioData.apiKeySid,
+        twilioData.apiSecretKey,
         { identity: identity }
       );
       token.addGrant(videoGrant);
