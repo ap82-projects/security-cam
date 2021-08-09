@@ -402,7 +402,15 @@ func main() {
 
 	// })
 
-	api.GET("firebase", func(c *gin.Context) {
+	api.GET("/twiliodata", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"accoundSid":   os.Getenv("REACT_APP_TWILIO_ACCOUNT_SID"),
+			"apiKeySid":    os.Getenv("REACT_APP_TWILIO_API_KEY_SID"),
+			"apiKeySecret": os.Getenv("REACT_APP_TWILIO_API_KEY_SECRET"),
+		})
+	})
+
+	api.GET("/firebase", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"apiKey":            os.Getenv("REACT_APP_API_KEY"),
 			"authDomain":        os.Getenv("REACT_APP_AUTH_DOMAIN"),
