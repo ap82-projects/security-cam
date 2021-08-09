@@ -145,7 +145,7 @@ func main() {
 			log.Println("Error:", err.Error())
 		}
 		log.Println("Sending user data")
-		log.Println(string(currentUserData))
+		// log.Println(string(currentUserData))
 		c.String(http.StatusOK, string(currentUserData))
 	})
 

@@ -63,7 +63,7 @@ function MainPage(props) {
           {watchSecurityCam ? 'Cut Security Feed' : 'View Security Feed'}
         </button> */}
         <button onClick={() => setAsSecurityCam(!asSecurityCam)}>
-          {asSecurityCam ? 'Stop Monitoring' : 'Security Cam'}
+          {asSecurityCam ? 'Main Page' : 'Monitoring'}
         </button>
       </div>
       <div>
