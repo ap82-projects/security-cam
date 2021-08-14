@@ -17,6 +17,7 @@
     "react-firebase-hooks": "^3.0.4",
     "react-scripts": "4.0.3",
     "react-webcam": "^5.2.4",
+    "socket.io-client": "^2.4.0",
     "twilio": "^3.65.0",
     "twilio-video": "^2.15.1",
     "web-vitals": "^1.0.1"
@@ -25,6 +26,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build-local": "react-scripts build && mv build/ ../server/web",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

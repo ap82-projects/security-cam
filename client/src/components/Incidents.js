@@ -1,10 +1,5 @@
 import './Incidents.css';
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 
 function Incidents(props) {
   const {
@@ -25,19 +20,19 @@ function Incidents(props) {
   function parceIncidents() {
     if (user.Incidents) {
       return user.Incidents.map(incident => (
-        <Card key={incident.Time}>
-          <Row>
-            <Card.Text>{(new Date(Number(incident.Time))).toString()}</Card.Text>
-          </Row>
-          <Row>
-            <Col>
+        <div className="card" key={incident.Time}>
+          <div className="row">
+            <p className="card-text">{(new Date(Number(incident.Time))).toString()}</p>
+          </div>
+          <div className="row">
+            <div className="col">
               <img className='incident-image' src={incident.Image}></img>
-            </Col>
-            <Col>
-              <Button variant='danger' id={incident.Time} onClick={deleteIncident}>Delete Incident</Button>
-            </Col>
-          </Row>
-        </Card>
+            </div>
+            <div className="col">
+              <button type="button" className="btn btn-danger" id={incident.Time} onClick={deleteIncident}>Delete Incident</button>
+            </col>
+          </div>
+        </div>
       ));
     } else {
       return <div></div>

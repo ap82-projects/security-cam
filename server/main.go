@@ -8,6 +8,8 @@ import (
 	// "fmt"
 	"log"
 	"net/http"
+
+	// "net/url"
 	"os"
 
 	// "time"
@@ -17,6 +19,11 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
+	gosocketio "github.com/graarh/golang-socketio"
+	"github.com/graarh/golang-socketio/transport"
+
+	// "github.com/gorilla/websocket"
+
 	"github.com/joho/godotenv"
 	"github.com/mitchellh/mapstructure"
 	"github.com/sendgrid/sendgrid-go"
@@ -35,6 +42,7 @@ func main() {
 			log.Println("Error loading .env file: ", err.Error())
 		}
 	}
+
 	/////////////////////////////////////////////////////////////////////////////
 	//*************************************************************************//
 	//********************** Firestore Authentication *************************//
@@ -85,10 +93,29 @@ func main() {
 
 	/////////////////////////////////////////////////////////////////////////////
 	//*************************************************************************//
+	//****************************** Socket.io ********************************//
+	//*************************************************************************//
+	/////////////////////////////////////////////////////////////////////////////
+	type Message struct {
+		Text string
+	}
+
+	socket := gosocketio.NewServer(transport.GetDefaultWebsocketTransport())
+
+	socket.On(gosocketio.OnConnection, func(c *gosocketio.Channel) {
+		log.Println("!!!!!!!!!!!!! SOCKET !!!!!!!!!!!!!")
+		log.Println("New client connected")
+		log.Println("id: ", c.Id())
+		log.Println("ip: ", c.Ip())
+		//join them to room
+		c.Join("chat")
+	})
+
+	/////////////////////////////////////////////////////////////////////////////
+	//*************************************************************************//
 	//************************** REST API Endpoints ***************************//
 	//*************************************************************************//
 	/////////////////////////////////////////////////////////////////////////////
-
 	router := gin.Default()
 
 	router.Use(static.Serve("/", static.LocalFile("./web", true)))
@@ -411,6 +438,8 @@ func main() {
 	})
 
 	api.GET("/firebase", func(c *gin.Context) {
+		log.Println("RemoteIP")
+		log.Println(c.ClientIP())
 		c.JSON(http.StatusOK, gin.H{
 			"apiKey":            os.Getenv("REACT_APP_API_KEY"),
 			"authDomain":        os.Getenv("REACT_APP_AUTH_DOMAIN"),
@@ -420,7 +449,16 @@ func main() {
 			"appId":             os.Getenv("REACT_APP_APP_ID"),
 		})
 	})
+
+	api.GET("/socket.io/", gin.WrapH(socket))
+	// router.Handle("/socket.io/", gin.WrapH())
+
 	router.Use(cors.Default())
+	// config := cors.DefaultConfig()
+	// config.AllowOrigins = []string{os.Getenv("URL")}
+	// router.Use(cors.New(config))
+	// log.Println("Current URL")
+	// log.Println(os.Getenv("URL"))
 	router.Run()
 
 	// routerPrivate := gin.Default()
