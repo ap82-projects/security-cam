@@ -1,0 +1,90 @@
+# version: 2.1
+# orbs:
+#   heroku: circleci/heroku@1.2.6
+# workflows:
+#   heroku_deploy:
+#     jobs:
+#       - heroku/push-docker-image:
+#         # executor: default
+#         parameters:
+#           app-name:
+#             default: $HEROKU_APP_NAME
+#             description: >-
+#               The name of your Heroku App. For backwards compatibility the literal value
+#               `$HEROKU_APP_NAME` is the default, so you can easily use this command by
+#               setting an environment variable called HEROKU_APP_NAME
+#             type: string
+#           maintenance-mode:
+#             default: false
+#             description: >-
+#               Use this to automatically enable mantainance mode before pre-deploy steps
+#               and have it disabled after post-deploy steps have been run.
+#             type: boolean
+#           post-deploy:
+#             default: []
+#             description: >-
+#               A list of post-deploy steps that are run after deployment. This would be
+#               an ideal place to scale any processes back up.
+#             type: steps
+#           pre-deploy:
+#             default: []
+#             description: >-
+#               A list of pre-deploy steps that are run before deployment. This would be
+#               an ideal place to scale any processes down.
+#             type: steps
+#         steps:
+#           - install
+#           - check-authentication
+#           - checkout
+#           - steps: << parameters.pre-deploy >>
+#           - push-docker-image:
+#               app-name: << parameters.app-name >>
+#               process-types: web
+#           - release-docker-image:
+#               app-name: << parameters.app-name >>
+#               process-types: web
+#           - steps: << parameters.post-deploy >>
+
+version: 2.1
+description: >
+  Quickly and easily take the changes to this branch and deploy them to Heroku
+  automatically with this job.
+executor: default
+parameters:
+  app-name:
+    default: security-cam-go
+    description: >-
+      The name of your Heroku App. For backwards compatibility the literal value
+      `$HEROKU_APP_NAME` is the default, so you can easily use this command by
+      setting an environment variable called HEROKU_APP_NAME
+    type: string
+  maintenance-mode:
+    default: false
+    description: >-
+      Use this to automatically enable mantainance mode before pre-deploy steps
+      and have it disabled after post-deploy steps have been run.
+    type: boolean
+  post-deploy:
+    default: []
+    description: >-
+      A list of post-deploy steps that are run after deployment. This would be
+      an ideal place to scale any processes back up.
+    type: steps
+  pre-deploy:
+    default: []
+    description: >-
+      A list of pre-deploy steps that are run before deployment. This would be
+      an ideal place to scale any processes down.
+    type: steps
+steps:
+  - install
+  - check-authentication
+  - checkout
+  # - steps: << parameters.pre-deploy >>
+  - push-docker-image:
+      app-name: security-cam-go
+      process-types: web
+  - release-docker-image:
+      app-name: security-cam-go
+      process-types: web
+  # - steps: << parameters.post-deploy >>

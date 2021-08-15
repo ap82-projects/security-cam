@@ -30,7 +30,7 @@ function Incidents(props) {
             </div>
             <div className="col">
               <button type="button" className="btn btn-danger" id={incident.Time} onClick={deleteIncident}>Delete Incident</button>
-            </col>
+            </div>
           </div>
         </div>
       ));
