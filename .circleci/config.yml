@@ -1,8 +1,29 @@
-version: 2.1
+# version: 2.1
+# orbs:
+#   heroku: circleci/heroku@1.2.6
+# workflows:
+#   heroku_deploy:
+#     jobs:
+#       - heroku/push-docker-image
+
 orbs:
-  heroku: circleci/heroku@1.2.6
+  heroku-container: pbrisbin/heroku-container@1.0.0
+version: 2.1
 workflows:
-  heroku_deploy:
+  build_and_release:
     jobs:
-      - heroku/push-docker-image
-        
+      - heroku-container/push-and-release:
+          app-name: security-cam-go
+          before-build:
+            - run: |
+                cat >Dockerfile.web \<<EOM
+                FROM ...
+                CMD ...
+                EOM
+
+                cat >Dockerfile.worker \<<EOM
+                FROM ...
+                CMD ...
+                EOM
+          process-types: web worker
+          recursive: true
