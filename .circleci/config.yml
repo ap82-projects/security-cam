@@ -4,5 +4,5 @@ orbs:
 workflows:
   heroku_deploy:
     jobs:
-      - heroku/push-docker-image:
+      - heroku/push-docker-image
         
