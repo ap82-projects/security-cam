@@ -35,6 +35,16 @@ import (
 	"google.golang.org/api/option"
 )
 
+func GinSocketIOServerWrapper(server *gosocketio.Server) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		if ctx.IsWebsocket() {
+			server.ServeHTTP(ctx.Writer, ctx.Request)
+		} else {
+			_, _ = ctx.Writer.WriteString("===not websocket request===")
+		}
+	}
+}
+
 func main() {
 	if os.Getenv("NODE_ENV") != "production" {
 		err := godotenv.Load()
@@ -82,6 +92,7 @@ func main() {
 	// 	Id       string
 	// 	Watching bool
 	// }
+
 	type User struct {
 		Name      string
 		GoogleId  string
@@ -97,7 +108,7 @@ func main() {
 	//*************************************************************************//
 	/////////////////////////////////////////////////////////////////////////////
 	type Message struct {
-		Text string
+		Text string `json:"text"`
 	}
 
 	socket := gosocketio.NewServer(transport.GetDefaultWebsocketTransport())
@@ -107,8 +118,26 @@ func main() {
 		log.Println("New client connected")
 		log.Println("id: ", c.Id())
 		log.Println("ip: ", c.Ip())
+		c.Emit("message", Message{"you connected"})
+		log.Println("message sent")
 		//join them to room
 		c.Join("chat")
+	})
+
+	socket.On("send", func(c *gosocketio.Channel, msg Message) string {
+		log.Println("!!!!! message received !!!!!")
+		//send event to all in room
+		c.BroadcastTo("chat", "message", msg)
+		return "OK"
+	})
+
+	socket.On(gosocketio.OnDisconnection, func(c *gosocketio.Channel) {
+		log.Println("!!!!!!!!!!!!! SOCKET !!!!!!!!!!!!!")
+		log.Println("Client disconnected")
+		log.Println("id: ", c.Id())
+		log.Println("ip: ", c.Ip())
+		//join them to room
+		c.Leave("chat")
 	})
 
 	/////////////////////////////////////////////////////////////////////////////
@@ -261,7 +290,6 @@ func main() {
 		subject := "Notification from Security Cam"
 		to := mail.NewEmail(currentUser.Name, currentUser.Email)
 		plainTextContent := "Movement has been detected.  Please log in to check status."
-		// htmlContent := "<img src=" + newIncident.Image + "alt=\"img\" />"
 		htmlContent := "<strong>Movement has been detected.  Please log in to check status.</strong>"
 		message := mail.NewSingleEmail(from, subject, to, plainTextContent, htmlContent)
 		client := sendgrid.NewSendClient(os.Getenv("SENDGRID_API_KEY"))
@@ -291,8 +319,7 @@ func main() {
 
 		var currentUser User
 		mapstructure.Decode(query.Data(), &currentUser)
-		// log.Println(currentUser)
-		log.Println("Updating User Data")
+		log.Println("Updating User Data for ", currentUser)
 
 		i := 0
 		for _, incident := range currentUser.Incidents {
@@ -321,7 +348,6 @@ func main() {
 		var currently WatchingUpdate
 		err := json.NewDecoder(c.Request.Body).Decode(&currently)
 		if err != nil {
-			// http.Error(w, err.Error(), http.StatusBadRequest)
 			c.String(http.StatusBadRequest, err.Error())
 			return
 		}
@@ -338,102 +364,11 @@ func main() {
 		}
 	})
 
-	// api.GET("/videotoken", func(c *gin.Context) {
-	// 	// log.Println("Request Type GET")
-	// 	// identity := c.Query("identity")
-	// 	// room := c.Query("room")
-	// 	// // var client http.Client
-	// 	// // token := twilio.AccessToken(os.Getenv("TWILIO_ACCOUNT_SID"), os.Getenv("TWILIO_AUTH_TOKEN"), &client)
-	// 	// accountID := os.Getenv("TWILIO_ACCOUNT_SID")
-	// 	// keyID := os.Getenv("TWILIO_API_KEY_SID")
-	// 	// secret := os.Getenv("TWILIO_API_KEY_SECRET")
-	// 	// token := twilio.NewAccessToken(accountID, keyID, secret)
-	// 	// token.SetIdentity(identity)
-	// 	// grant := twilio.NewVideoGrant(room)
-	// 	// token.AddGrant(grant)
-	// 	// jwt, err := token.ToJWT()
-	// 	// if err != nil {
-	// 	// 	log.Println("Error Creating JWT token: ", err.Error())
-	// 	// } else {
-	// 	// 	log.Println(identity, room)
-	// 	// 	log.Println("token")
-	// 	// 	log.Println(token)
-	// 	//  c.JSON(http.StatusOK, gin.H{
-	// 	//   "token": token,
-	// 	//  })
-	// 	// }
-
-	// 	accountSid := os.Getenv("TWILIO_ACCOUNT_SID")
-	// 	keySid := os.Getenv("TWILIO_API_KEY_SID")
-	// 	keySecret := os.Getenv("TWILIO_API_KEY_SECRET")
-	// 	username := c.Query("identity")
-	// 	roomName := c.Query("room")
-
-	// 	now := time.Now()
-
-	// 	type JWTPayload struct {
-	// 		Jti                    string `json:"jti"`
-	// 		Issuer                 string `json:"iss"`
-	// 		Subject                string `json:"sub"`
-	// 		CreationUnixTimestamp  int64  `json:"iat"`
-	// 		NotBeforeUnixTimestamp int64  `json:"nbf"`
-	// 		ExpiresUnixTimestamp   int64  `json:"exp"`
-	// 		Grants                 struct {
-	// 			Identity string `json:"identity"`
-	// 			Video    struct {
-	// 				Room string `json:"room"`
-	// 			} `json:"video"`
-	// 		} `json:"grants"`
-	// 	}
-
-	// 	payload := JWTPayload{
-	// 		Jti:                    fmt.Sprintf("%s-%d", keySid, now.UnixNano()),
-	// 		Issuer:                 keySid,
-	// 		Subject:                accountSid,
-	// 		CreationUnixTimestamp:  now.Unix(),
-	// 		NotBeforeUnixTimestamp: now.Unix(),
-	// 		ExpiresUnixTimestamp:   now.Add(23 * time.Hour).Unix(),
-	// 		Grants: struct {
-	// 			Identity string `json:"identity"`
-	// 			Video    struct {
-	// 				Room string `json:"room"`
-	// 			} `json:"video"`
-	// 		}{
-	// 			Identity: username,
-	// 			Video: struct {
-	// 				Room string `json:"room"`
-	// 			}{
-	// 				Room: roomName,
-	// 			},
-	// 		},
-	// 	}
-
-	// 	payloadByte, err := json.Marshal(payload)
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 	}
-	// 	token, err := jose.SignBytes(payloadByte, jose.HS256, []byte(keySecret),
-	// 		jose.Header("cty", "twilio-fpa;v=1"),
-	// 		jose.Header("typ", "JWT"),
-	// 		jose.Header("alg", "HS256"),
-	// 	)
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 	}
-
-	// 	fmt.Println(token)
-	// 	// c.String(http.StatusOK, "{ \"token\":", token, "}")
-	// 	c.JSON(http.StatusOK, gin.H{
-	// 		"token": token,
-	// 	})
-
-	// })
-
 	api.GET("/twiliodata", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
-			"accoundSid":   os.Getenv("REACT_APP_TWILIO_ACCOUNT_SID"),
-			"apiKeySid":    os.Getenv("REACT_APP_TWILIO_API_KEY_SID"),
-			"apiKeySecret": os.Getenv("REACT_APP_TWILIO_API_KEY_SECRET"),
+			"accoundSid":   os.Getenv("TWILIO_ACCOUNT_SID"),
+			"apiKeySid":    os.Getenv("TWILIO_API_KEY_SID"),
+			"apiKeySecret": os.Getenv("TWILIO_API_KEY_SECRET"),
 		})
 	})
 
@@ -441,17 +376,30 @@ func main() {
 		log.Println("RemoteIP")
 		log.Println(c.ClientIP())
 		c.JSON(http.StatusOK, gin.H{
-			"apiKey":            os.Getenv("REACT_APP_API_KEY"),
-			"authDomain":        os.Getenv("REACT_APP_AUTH_DOMAIN"),
-			"projectId":         os.Getenv("REACT_APP_PROJECT_ID"),
-			"storageBucket":     os.Getenv("REACT_APP_STORAGE_BUCKET"),
-			"messagingSenderId": os.Getenv("REACT_APP_MESSAGING_SENDER_ID"),
-			"appId":             os.Getenv("REACT_APP_APP_ID"),
+			"apiKey":            os.Getenv("API_KEY"),
+			"authDomain":        os.Getenv("AUTH_DOMAIN"),
+			"projectId":         os.Getenv("PROJECT_ID"),
+			"storageBucket":     os.Getenv("STORAGE_BUCKET"),
+			"messagingSenderId": os.Getenv("MESSAGING_SENDER_ID"),
+			"appId":             os.Getenv("APP_ID"),
 		})
 	})
 
-	api.GET("/socket.io/", gin.WrapH(socket))
+	// api.GET("/socket.io/", gin.WrapH(socket.Handler))
+	// socketHandle := http.NewServeMux()
+	// socketHandle.Handle("/socket.io/", socket)
+	// api.GET("/socket.io/", gin.WrapH(socketHandle))
+
+	// router.GET("/socket.io", gin.WrapH(socket))
 	// router.Handle("/socket.io/", gin.WrapH())
+	// api.GET("/socket.io", GinSocketIOServerWrapper(socket))
+	router.GET("/socket.io/", GinSocketIOServerWrapper(socket))
+	router.POST("/socket.io/", GinSocketIOServerWrapper(socket))
+
+	// The below works for serving the socket.io connection
+	// serveMux := http.NewServeMux()
+	// serveMux.Handle("/socket.io/", socket)
+	// http.ListenAndServe(":8080", serveMux)
 
 	router.Use(cors.Default())
 	// config := cors.DefaultConfig()

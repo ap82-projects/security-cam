@@ -32,11 +32,6 @@ const VideoChat = (props) => {
       const AccessToken = require('twilio').jwt.AccessToken;
       const VideoGrant = AccessToken.VideoGrant;
 
-      // Used when generating any kind of tokens
-      // const twilioAccountSid = process.env.REACT_APP_TWILIO_ACCOUNT_SID;
-      // const twilioApiKey = process.env.REACT_APP_TWILIO_API_KEY_SID;
-      // const twilioApiSecret = process.env.REACT_APP_TWILIO_API_KEY_SECRET;
-
       const identity = username;
 
       // Create Video Grant
@@ -44,15 +39,8 @@ const VideoChat = (props) => {
         room: roomName,
       });
 
-      // Create an access token which we will sign and return to the client,
-      // containing the grant we just created
+      // Create an access token
       const twilioData = (await axios.get("/api/twiliodata")).data
-      // const token = new AccessToken(
-      //   twilioAccountSid,
-      //   twilioApiKey,
-      //   twilioApiSecret,
-      //   { identity: identity }
-      // );
       const token = new AccessToken(
         twilioData.accountSid,
         twilioData.apiKeySid,
@@ -61,10 +49,6 @@ const VideoChat = (props) => {
       );
       token.addGrant(videoGrant);
 
-      // Serialize the token to a JWT string
-      // console.log(token.toJwt());
-
-      // Video.connect(data.token, {
       Video.connect(token.toJwt(), {
         name: roomName,
         audio: true,

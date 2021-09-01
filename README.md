@@ -1,36 +1,48 @@
-# security-cam
-This is a remake of an app I wrote during my time as a student in Code Chrysalis.  The original app was separated into two repositories, one for the Golang server and one for the React client.  It is now hosted in a monorepo and the entire app has been dockerized to make for easier deployment and to have a consistent testing environment.  You can see a live version by clicking the link below.
+# SecurityCam
+This app can be used to repurpose devices with webcams to be used as security cameras.  All that is necessary other than the camera is a browser and connection to the internet.  You can see a live version by clicking the link below.
 
 [Security Cam on Heroku](https://security-cam-go.herokuapp.com/)
 
-## Technologies Used
-### Golang
-Golang was used to write the server backend.  It was used for creating the API endpoints as well as handling communication with the database via Firestore and user notification using SendGrid
+## Running SecurityCam Locally
+Clone the repository locally and create a .env file with the following environment variables defined
+# API_KEY, AUTH_DOMAIN, PROJECT_ID, STORAGE_BUCKET, MESSAGING_SENDER_ID, APP_ID
+These are associated with your Firebase account and can be found in the bottom of
+"Project Settings" -> "General"
+of your associated Firebase project
 
-### Firebase
-Firebase was used for user login and authentication as well as for storing incident images with timestamps and user data via Firestore
+# FIRESTORE_JSON
+This is the JSON data created by going to 
+"Project Settings" -> "Service Accounts" -> "Firebase Admin SDK" -> "Generate new private key"
+of your associated Firebase project
 
-### SendGrid
-SendGrid is used to notify the user via email that the security camera app detected motion and has recorded an image of the incident.
+# SENDGRID_API_KEY
+This key can be created by going to
+"Settings" -> "API Keys" -> "Create API Key"
+from your SendGrid dashboard
 
-### React
-React is used for creating the frontend for this app.
+# AUTH_EMAIL_ADDR
+The email address that the notifications are to be sent from.  It must be verified in SendGrid by going to
+"Settings" -> "Sender Authentication" -> "Verify a Single Sender"
+from your SendGrid dashboard
 
-### Docker
-Docker is used as a container for the backend and frontend allowing for a consistent environment for both development and deployment
+# AUTH_EMAIL_NAME
+The name to be associated with the email address above.  Best to use the name registered with SendGrid
 
-### CircleCI
-CircleCI is used for CI/CD.  While Heroku can be used to automatically build and deploy the container directly from GitHub, the project is large enough that it runs out of memory during the build.  Therefore CircleCI is used to automatically build the container and then deploy it in it's built state to Heroku.
+## Running server and client independently
+# Starting the server
+1. Copy the .env file to the root of the server directory
+2. From a new terminal instance, navigate into the server directory and run "go run main.go"
 
-## Future Features
-### Socket.io
-This will be used for a future feature where the user can log in and monitor the security camera remotely.  It will tell the security camera to stop detecting motion and transmit the video feed.  It will also be used to let the security camera know when the user has logged out to then resume monitoring.
+# Starting the client
+1. From a new terminal instance, navigate into the client directory and run "npm install"
+2. To start the client in a development environment with hot-reloading, run "npm start" and access the client from localhost:3000
+3. To build the client and have it served by the server, run "npm run build-local" and access the client from localhost:8080
 
-### Twilio
-This will be used to transmit the live video feed when the user wants to watch a live video feed.  It's activation and deactivation will be handled by communication via Socket.io.
-
-### Bootstrap
-Bootstrap will be used to improve the look of the front end app.
+## Running server and client within a Docker container
+1. Copy the .env file to the root of the cloned repository
+2. From a new terminal instance, navigate to the root of the cloned repository
+3. Make sure your docker daemon is running and execute "docker build -t security-cam ."
+4. If the container was built with no errors, then execute "docker run --env-file .env -p 3000:8080 -d security-cam" and access the client from localhost:3000
 
 ## API Endpoints
 
@@ -92,14 +104,49 @@ Used to add incidents to the user's data as well as send notification email via 
 ### DELETE /api/user/incident?id=<"user id as string">&time=<"time of incident as string">
 Deletes specified incident from users data
 
-### /api/user/watching?id=<"user id as string">
+### PUT /api/user/watching?id=<"user id as string">
 Sets whether the user is currently trying to watch the live camera feed.  Can be set with the following.
 \{
   "watching": boolean representing whether the user is watching or not
 \}
 
-### /api/firebase
+### GET /api/firebase
 Used for interacting with firebase
 
-### /api/twiliodata
+### GET /api/twiliodata
 Used for interacting with twilio
+
+## Technologies Used
+### Golang
+Golang was used to write the server backend.  It was used for creating the API endpoints as well as handling communication with the database via Firestore and user notification using SendGrid
+
+### Firebase
+Firebase was used for user login and authentication as well as for storing incident images with timestamps and user data via Firestore
+
+### SendGrid
+SendGrid is used to notify the user via email that the security camera app detected motion and has recorded an image of the incident.
+
+### React
+React is used for creating the frontend for this app.
+
+### Docker
+Docker is used as a container for the backend and frontend allowing for a consistent environment for both development and deployment
+
+### CircleCI
+CircleCI is used for CI/CD.  While Heroku can be used to automatically build and deploy the container directly from GitHub, the project is large enough that it runs out of memory during the build.  Therefore CircleCI is used to automatically build the container and then deploy it in it's built state to Heroku.
+
+### Heroku
+Heroku is used for hosting the app on the web.  Originally it was also used for CI/CD but the build process took up too much memory for the free tier.
+
+## Future Features
+### Socket.io
+[Realtime communication to trigger live video feed](https://github.com/ap82-projects/security-cam/issues/1)
+This will be used for a future feature where the user can log in and monitor the security camera remotely.  It will tell the security camera to stop detecting motion and transmit the video feed.  It will also be used to let the security camera know when the user has logged out to then resume monitoring.
+
+### Twilio
+[Implement live video feed](https://github.com/ap82-projects/security-cam/issues/2)
+This will be used to transmit the live video feed when the user wants to watch a live video feed.  It's activation and deactivation will be handled by communication via Socket.io.
+
+### Bootstrap
+[Improve UI](https://github.com/ap82-projects/security-cam/issues/3)
+Bootstrap will be used to improve the look of the front end app.

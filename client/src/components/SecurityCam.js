@@ -7,11 +7,9 @@ function SecurityCam(props) {
   const [movementDetected, setMovementDetected] = useState(false);
   const [videoConstraints, setVideoConstraints] = useState('user'); // user-facing/selfie
   const [isMonitoring, setIsMonitoring] = useState(false);
-  // const [justStarted, setJustStarted] = useState(true);
   const [threshold, setThreshold] = useState(15);
   const [timeInterval, setTimeInterval] = useState(500);
   let pre, post;
-  // let diffImg = '';
 
   const webcamRef = useRef(null);
   const capture = async () => {
@@ -23,10 +21,8 @@ function SecurityCam(props) {
 
         compare(pre, post, function (result) {
           if (result > threshold) {
-            // console.log("motion detected")
             setMovementDetected(true);
             setTimeout(() => setMovementDetected(false), Math.floor(timeInterval * .8))
-            // console.log("isMonitoring: ", isMonitoring)
             if (isMonitoring) addIncident(post);
           }
         });
@@ -35,24 +31,13 @@ function SecurityCam(props) {
   }
 
   useEffect(() => {
-    // if (isMonitoring) {
-    // console.log("threshold:", threshold)
-    // console.log("interval:", timeInterval)
     const captureInterval = setInterval(capture, timeInterval)
     return () => clearInterval(captureInterval)
-    // }
   }, [isMonitoring, threshold, timeInterval])
 
   return (
     <div className='SecurityCam'>
-      {/* <h3 style={movementDetected ? "border:red; border-width:5px; border-style:solid": ""}>Monitoring for Movement</h3> */}
       <h3>{movementDetected ? "Movement Detected" : "Monitoring for Movement"}</h3>
-      {/* <h4>{movement}</h4> */}
-      {/* <button
-        onClick={() => setVideoConstraints(videoConstraints === 'user' ? { exact: 'environment' } : 'user')}
-      >
-        {videoConstraints === 'user' ? 'Use Forward Camera' : 'Use Selfie Camera'}
-      </button> */}
       <Webcam
         audio={false}
         screenshotFormat='image/jpeg'
@@ -62,12 +47,10 @@ function SecurityCam(props) {
       <button
         onClick={() => {
           setIsMonitoring(!isMonitoring)
-          // setJustStarted(true)
         }}
       >{isMonitoring ? "Pause Monitoring" : "Start Monitoring"}</button>
     </div>
   )
-
 
   // The following function taken from
   // https://rosettacode.org/wiki/Percentage_difference_between_images
@@ -103,7 +86,6 @@ function SecurityCam(props) {
           diff += Math.abs(img1.data[4 * i + 1] - img2.data[4 * i + 1]) / 255;
           diff += Math.abs(img1.data[4 * i + 2] - img2.data[4 * i + 2]) / 255;
         }
-        // diffImg = diff
         callback(100 * diff / (img1.width * img1.height * 3));
       });
     });
