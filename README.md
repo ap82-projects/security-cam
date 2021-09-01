@@ -5,35 +5,35 @@ This app can be used to repurpose devices with webcams to be used as security ca
 
 ## Running SecurityCam Locally
 Clone the repository locally and create a .env file with the following environment variables defined
-# API_KEY, AUTH_DOMAIN, PROJECT_ID, STORAGE_BUCKET, MESSAGING_SENDER_ID, APP_ID
+### API_KEY, AUTH_DOMAIN, PROJECT_ID, STORAGE_BUCKET, MESSAGING_SENDER_ID, APP_ID
 These are associated with your Firebase account and can be found in the bottom of
 "Project Settings" -> "General"
 of your associated Firebase project
 
-# FIRESTORE_JSON
+### FIRESTORE_JSON
 This is the JSON data created by going to 
 "Project Settings" -> "Service Accounts" -> "Firebase Admin SDK" -> "Generate new private key"
 of your associated Firebase project
 
-# SENDGRID_API_KEY
+### SENDGRID_API_KEY
 This key can be created by going to
 "Settings" -> "API Keys" -> "Create API Key"
 from your SendGrid dashboard
 
-# AUTH_EMAIL_ADDR
+### AUTH_EMAIL_ADDR
 The email address that the notifications are to be sent from.  It must be verified in SendGrid by going to
 "Settings" -> "Sender Authentication" -> "Verify a Single Sender"
 from your SendGrid dashboard
 
-# AUTH_EMAIL_NAME
+### AUTH_EMAIL_NAME
 The name to be associated with the email address above.  Best to use the name registered with SendGrid
 
 ## Running server and client independently
-# Starting the server
+### Starting the server
 1. Copy the .env file to the root of the server directory
 2. From a new terminal instance, navigate into the server directory and run "go run main.go"
 
-# Starting the client
+### Starting the client
 1. From a new terminal instance, navigate into the client directory and run "npm install"
 2. To start the client in a development environment with hot-reloading, run "npm start" and access the client from localhost:3000
 3. To build the client and have it served by the server, run "npm run build-local" and access the client from localhost:8080
@@ -139,14 +139,9 @@ CircleCI is used for CI/CD.  While Heroku can be used to automatically build and
 Heroku is used for hosting the app on the web.  Originally it was also used for CI/CD but the build process took up too much memory for the free tier.
 
 ## Future Features
-### Socket.io
-[Realtime communication to trigger live video feed](https://github.com/ap82-projects/security-cam/issues/1)
-This will be used for a future feature where the user can log in and monitor the security camera remotely.  It will tell the security camera to stop detecting motion and transmit the video feed.  It will also be used to let the security camera know when the user has logged out to then resume monitoring.
+### [Realtime communication to trigger live video feed](https://github.com/ap82-projects/security-cam/issues/1)
 
-### Twilio
-[Implement live video feed](https://github.com/ap82-projects/security-cam/issues/2)
-This will be used to transmit the live video feed when the user wants to watch a live video feed.  It's activation and deactivation will be handled by communication via Socket.io.
+### [Implement live video feed](https://github.com/ap82-projects/security-cam/issues/2)
 
-### Bootstrap
-[Improve UI](https://github.com/ap82-projects/security-cam/issues/3)
-Bootstrap will be used to improve the look of the front end app.
+### [Improve UI](https://github.com/ap82-projects/security-cam/issues/3)
+
