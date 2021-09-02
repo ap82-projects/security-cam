@@ -1,7 +1,7 @@
 # SecurityCam
 This app can be used to repurpose devices with webcams to be used as security cameras.  All that is necessary other than the camera is a browser and connection to the internet.  You can see a live version by clicking the link below.
 
-[Security Cam on Heroku](https://security-cam-go.herokuapp.com/)
+[SecurityCam on Heroku](https://security-cam-go.herokuapp.com/)
 
 ## Running SecurityCam Locally
 Clone the repository locally and create a .env file with the following environment variables defined
@@ -111,10 +111,10 @@ Sets whether the user is currently trying to watch the live camera feed.  Can be
 \}
 
 ### GET /api/firebase
-Used for interacting with firebase
+Used for interacting with Firebase
 
 ### GET /api/twiliodata
-Used for interacting with twilio
+Used for interacting with Twilio
 
 ## Technologies Used
 ### Golang
@@ -124,10 +124,10 @@ Golang was used to write the server backend.  It was used for creating the API e
 Firebase was used for user login and authentication as well as for storing incident images with timestamps and user data via Firestore
 
 ### SendGrid
-SendGrid is used to notify the user via email that the security camera app detected motion and has recorded an image of the incident.
+SendGrid is used to notify the user via email that the security camera app detected motion and has recorded an image of the incident
 
 ### React
-React is used for creating the frontend for this app.
+React is used for creating the frontend for this app
 
 ### Docker
 Docker is used as a container for the backend and frontend allowing for a consistent environment for both development and deployment
